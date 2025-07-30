@@ -1,7 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace Blok3Game.Engine;
+namespace GMTK2025.Engine;
+
 public class Vector2Int
 {
 	public int X { get; set; }

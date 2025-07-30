@@ -6,9 +6,10 @@ namespace GMTK2025.Screens;
 
 public class TitleScreen : Screen
 {
-	private Button SimSelectionButton;
+	private Button GameButton;
 	private Button GlobalSettingsButton;
 	private Button exitButton;
+	private Button RoomCreatorButton;
 	private TextElement titleText;
 
 	public TitleScreen()
@@ -29,10 +30,15 @@ public class TitleScreen : Screen
 		titleText.Position = new Vector2(ButtonX, 128);
 		Add(titleText);
 
-		SimSelectionButton = new Button(new Vector2(ButtonX, ButtonYStart), buttonSize);
-		SimSelectionButton.Text = "Start Game";
-		SimSelectionButton.Clicked += () => App.ScreenManager.SwitchTo(ScreenManager.TITLE_SCREEN);
-		Add(SimSelectionButton);
+		GameButton = new Button(new Vector2(ButtonX, ButtonYStart), buttonSize);
+		GameButton.Text = "Start Game";
+		GameButton.Clicked += () => App.ScreenManager.SwitchTo(ScreenManager.GAME_SCREEN);
+		Add(GameButton);
+
+		RoomCreatorButton = new Button(new Vector2(ButtonWidth / 4 + 8, 1080 - ButtonHeight / 4 - 8), buttonSize / 2);
+		RoomCreatorButton.Text = "Room Creator";
+		RoomCreatorButton.Clicked += () => App.ScreenManager.SwitchTo(ScreenManager.ROOM_CREATOR_SCREEN);
+		Add(RoomCreatorButton);
 
 		GlobalSettingsButton = new Button(new Vector2(ButtonX, ButtonYStart + ButtonSpacing), buttonSize);
 		GlobalSettingsButton.Text = "Global Settings";
