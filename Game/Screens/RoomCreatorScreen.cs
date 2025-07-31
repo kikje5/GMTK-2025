@@ -1,5 +1,5 @@
 using System;
-using GMTK2025.LevelGeneration;
+using GMTK2025.RoomGeneration;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ public class RoomCreatorScreen : Screen
 	private readonly Texture2D _selectionTile = LoadTexture("tiles/SelectionTile");
 	private Vector2Int _highlightTile;
 	private Vector2 _selectionTilePosition;
-	private Vector2 _gridPosition = new Vector2(0, 0);
+	private Vector2 _gridPosition = new Vector2(448, 16);
 	private bool _mouseIsInGrid = false;
 
 	//dragging variables
@@ -85,17 +85,21 @@ public class RoomCreatorScreen : Screen
 		_wallTiles.Add(new WallTile("StandardWall", LoadTexture("tiles/WallTile")));
 		_groundTiles.Add(new GroundTile("StandardGround", LoadTexture("tiles/GroundTile")));
 
-		_groundTiles.Add(new GroundTile("TexturedGround1", LoadTexture("tiles/TexturedGround1")));
-		_groundTiles.Add(new GroundTile("TexturedGround2", LoadTexture("tiles/TexturedGround2")));
-		_groundTiles.Add(new GroundTile("TexturedGround3", LoadTexture("tiles/TexturedGround3")));
-		_groundTiles.Add(new GroundTile("TexturedGround4", LoadTexture("tiles/TexturedGround4")));
-		_groundTiles.Add(new GroundTile("TexturedGround5", LoadTexture("tiles/TexturedGround5")));
+		_groundTiles.Add(new GroundTile("Sand", LoadTexture("tiles/Sand")));
 	}
 
 	private void LoadDecorationTypes()
 	{
-		_decorationTypes.Add(new DecorationType("chest", LoadTexture("Decoration/chest"), true));
-		_decorationTypes.Add(new DecorationType("smudge", LoadTexture("Decoration/smudge"), false));
+		_decorationTypes.Add(new DecorationType("Cactus1", LoadTexture("Decoration/Cactus1")));
+		_decorationTypes.Add(new DecorationType("Cactus2", LoadTexture("Decoration/Cactus2")));
+		_decorationTypes.Add(new DecorationType("Cactus3", LoadTexture("Decoration/Cactus3")));
+		_decorationTypes.Add(new DecorationType("Bush1", LoadTexture("Decoration/Bush1")));
+		_decorationTypes.Add(new DecorationType("Bush2", LoadTexture("Decoration/Bush2")));
+		_decorationTypes.Add(new DecorationType("Pebbel1", LoadTexture("Decoration/Pebbel1")));
+		_decorationTypes.Add(new DecorationType("Pebbel2", LoadTexture("Decoration/Pebbel2")));
+		_decorationTypes.Add(new DecorationType("Pebbel3", LoadTexture("Decoration/Pebbel3")));
+		_decorationTypes.Add(new DecorationType("Skull1", LoadTexture("Decoration/Skull1")));
+		_decorationTypes.Add(new DecorationType("Skull2", LoadTexture("Decoration/Skull2")));
 	}
 
 	private void GenerateNamedTextures()
@@ -120,7 +124,7 @@ public class RoomCreatorScreen : Screen
 		{
 			new NamedTexture("EditMode: Ground", LoadTexture("tiles/GroundTile")),
 			new NamedTexture("EditMode: Wall", LoadTexture("tiles/WallTile")),
-			new NamedTexture("EditMode: Decoration", LoadTexture("Decoration/chest")),
+			new NamedTexture("EditMode: Decoration", LoadTexture("Decoration/Cactus1")),
 			new NamedTexture("EditMode: Spawn Points", LoadTexture("Points/EnemyPoint"))
 		};
 
@@ -139,10 +143,10 @@ public class RoomCreatorScreen : Screen
 
 		int screenWidth = 1920;
 
-		_assetSelector = new Selector(new Vector2(screenWidth - 80, 32), _groundTileNamedTextures);
+		_assetSelector = new Selector(new Vector2(screenWidth - 192, 32), _groundTileNamedTextures);
 		Add(_assetSelector);
 
-		_editModeSelector = new Selector(new Vector2(80, 32), _editModesNamedTextures);
+		_editModeSelector = new Selector(new Vector2(192, 32), _editModesNamedTextures);
 		_editModeSelector.OnChange += () =>
 		{
 			_currentEditType = _editModeSelector.SelectedIndex;
@@ -154,7 +158,25 @@ public class RoomCreatorScreen : Screen
 
 	private void AddTypeButton()
 	{
+		int screenWidth = 1920;
+		int screenHeight = 1080;
 
+		Button selectTypeButton = new Button(new Vector2(screenWidth - 192, screenHeight / 2 - 32), new Vector2(384, 64));
+		selectTypeButton.Text = "Type: " + _room.GetRoomType().ToString();
+		selectTypeButton.Clicked += () =>
+		{
+			RoomType CurrentType = _room.GetRoomType();
+			RoomType NewType = CurrentType switch
+			{
+				RoomType.NormalRoom => RoomType.BossRoom,
+				RoomType.BossRoom => RoomType.TreasureRoom,
+				RoomType.TreasureRoom => RoomType.NormalRoom,
+				_ => RoomType.NormalRoom
+			};
+			_room.SetType(NewType);
+			selectTypeButton.Text = "Type: " + _room.GetRoomType().ToString();
+		};
+		Add(selectTypeButton);
 	}
 
 	private void AddSaveElements()
@@ -164,13 +186,14 @@ public class RoomCreatorScreen : Screen
 
 		TextElement nameText = new TextElement("Fonts/SimpleButtonFont");
 		nameText.Text = "Room Name:";
-		nameText.Position = new Vector2(screenWidth - 128, screenHeight - 80);
+		nameText.Position = new Vector2(screenWidth - 192, screenHeight - 192);
 		Add(nameText);
 
-		TextInput nameInput = new TextInput(new Vector2(screenWidth - 128, screenHeight - 64), new Vector2(256, 32));
+		TextInput nameInput = new TextInput(new Vector2(screenWidth - 192, screenHeight - 96), new Vector2(256, 64));
+		nameInput.Text = "MyRoom";
 		Add(nameInput);
 
-		Button saveButton = new Button(new Vector2(screenWidth - 128, screenHeight - 32), new Vector2(128, 32));
+		Button saveButton = new Button(new Vector2(screenWidth - 192, screenHeight - 32), new Vector2(128, 32));
 		saveButton.Text = "Save";
 		saveButton.Clicked += () => { SaveRoom(nameInput.Text); };
 		Add(saveButton);
@@ -251,14 +274,14 @@ public class RoomCreatorScreen : Screen
 	{
 		Vector2 mouseGridPosition = GlobalPositionToPositionInGrid(mousePosition);
 
-		if (_currentEditType == 3)
+		if (_currentEditType == 2)
 		{
 			if (!GrabDecoration(mouseGridPosition))
 			{
 				AddDecoration((int)mouseGridPosition.X, (int)mouseGridPosition.Y);
 			}
 		}
-		else if (_currentEditType == 4)
+		else if (_currentEditType == 3)
 		{
 			if (!GrabSpawnPoint(mouseGridPosition))
 			{
@@ -270,15 +293,15 @@ public class RoomCreatorScreen : Screen
 	private void HandleMouseRightPress(Vector2 mousePosition)
 	{
 		Vector2 mouseGridPosition = GlobalPositionToPositionInGrid(mousePosition);
-		if (_currentEditType <= 2)
+		if (_currentEditType <= 1)
 		{
 			_room.DeleteTile(_highlightTile.X, _highlightTile.Y);
 		}
-		if (_currentEditType == 3)
+		if (_currentEditType == 2)
 		{
 			RemoveDecoration(mouseGridPosition);
 		}
-		if (_currentEditType == 4)
+		if (_currentEditType == 3)
 		{
 			RemoveSpawnPoint(mouseGridPosition);
 		}
@@ -290,11 +313,11 @@ public class RoomCreatorScreen : Screen
 		{
 			return;
 		}
-		if (_currentEditType == 3)
+		if (_currentEditType == 2)
 		{
 			_currentDraggingDecoration.Position = GlobalPositionToPositionInGrid(mousePosition);
 		}
-		else if (_currentEditType == 4)
+		else if (_currentEditType == 3)
 		{
 			Vector2 mouseGridPosition = GlobalPositionToPositionInGrid(mousePosition);
 
@@ -407,7 +430,7 @@ public class RoomCreatorScreen : Screen
 		{
 			if (-1 <= (int)(_roomWidth / 2f) - x && (int)(_roomWidth / 2f) - x <= 1)
 			{
-				_room.SetTile(x, y, _groundTiles[0]);
+				_room.SetTile(x, y, _groundTiles[1]);
 			}
 			else
 			{
@@ -416,7 +439,7 @@ public class RoomCreatorScreen : Screen
 		}
 		else
 		{
-			_room.SetTile(x, y, _groundTiles[0]);
+			_room.SetTile(x, y, _groundTiles[1]);
 		}
 	}
 

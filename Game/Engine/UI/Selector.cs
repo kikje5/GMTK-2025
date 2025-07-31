@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using GMTK2025.LevelGeneration;
+using GMTK2025.RoomGeneration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -59,9 +59,11 @@ public class Selector : UIElement
 
 	public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 	{
-		base.Draw(gameTime, spriteBatch);
+		//base.Draw(gameTime, spriteBatch);
 		Texture2D texture = Icons[SelectedIndex].Texture;
 		string name = Icons[SelectedIndex].Name;
+
+		spriteBatch.Draw(currentTexture, new Rectangle((int)Position.X - 64, (int)Position.Y - 24, 128, 48), Color.White);
 
 		spriteBatch.Draw(texture, new Rectangle((int)Position.X - 16, (int)Position.Y - 16, 32, 32), Color.White);
 		spriteBatch.DrawString(font, name, Position + new Vector2(font.MeasureString(name).X / -2, 32), Color.White);

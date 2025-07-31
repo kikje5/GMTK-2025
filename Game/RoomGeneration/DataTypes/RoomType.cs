@@ -1,4 +1,4 @@
-namespace GMTK2025.LevelGeneration
+namespace GMTK2025.RoomGeneration
 {
     public enum RoomType
     {

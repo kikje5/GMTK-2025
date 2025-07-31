@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using GMTK2025.Engine;
-namespace GMTK2025.LevelGeneration;
+namespace GMTK2025.RoomGeneration;
 
 public class Decoration
 {

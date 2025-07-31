@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GMTK2025.LevelGeneration;
+namespace GMTK2025.RoomGeneration;
 
 public class NamedTexture
 {

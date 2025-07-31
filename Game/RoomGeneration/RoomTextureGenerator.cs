@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using GMTK2025.Engine;
 
-namespace GMTK2025.LevelGeneration
+namespace GMTK2025.RoomGeneration
 {
 	public static class RoomTextureGenerator
 	{
@@ -14,11 +14,11 @@ namespace GMTK2025.LevelGeneration
 		/// <param name="decorations">all the decorations in the room.</param>
 		/// <param name="tileSize">the size of tiles.</param>
 		/// <returns><c>Texture2D</c> the room texture</returns>
-		public static Texture2D GenerateRoomTexture(Room room, int tileSize)
+		public static Texture2D GenerateRoomTexture(EditableRoom room, int tileSize)
 		{
-			Vector2Int size = room.Size;
-			Tile[,] tiles = room.Tiles;
-			Decoration[] decorations = room.Decorations;
+			Vector2Int size = room.GetSize();
+			Tile[,] tiles = room.GetTiles();
+			Decoration[] decorations = room.GetDecorations();
 			// generating the room works by letting the graphics device render to a render target which can be cast to a texture2D
 			RenderTarget2D texture = new RenderTarget2D(App.Instance.GraphicsDevice, size.X * tileSize, size.Y * tileSize);
 			App.Instance.GraphicsDevice.SetRenderTarget(texture);

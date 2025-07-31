@@ -1,42 +1,41 @@
 using System.Collections.Generic;
 
-namespace GMTK2025.LevelGeneration
+namespace GMTK2025.RoomGeneration;
+
+public class RoomManager
 {
-	public class RoomManager
+	private static RoomManager instance = null;
+
+	private Room[] _rooms;
+
+	/// <summary>
+	/// Wow now THIS is a singleton :)
+	/// <para>See: <see cref="https://refactoring.guru/design-patterns/singleton"/></para>
+	/// </summary>
+	/// <returns>the instance of the singleton</returns>
+	public static RoomManager GetInstance()
 	{
-		private static RoomManager instance = null;
-
-		private Room[] _rooms;
-
-		/// <summary>
-		/// Wow now THIS is a singleton :)
-		/// <para>See: <see cref="https://refactoring.guru/design-patterns/singleton"/></para>
-		/// </summary>
-		/// <returns>the instance of the singleton</returns>
-		public static RoomManager GetInstance()
+		if (instance == null)
 		{
-			if (instance == null)
-			{
-				instance = new RoomManager();
-				instance.LoadRooms();
-			}
-			return instance;
+			instance = new RoomManager();
+			instance.LoadRooms();
 		}
+		return instance;
+	}
 
-		private void LoadRooms()
+	private void LoadRooms()
+	{
+		List<Room> _rooms = new List<Room>();
+		string[] RoomNames = RoomSaver.GetRoomNames();
+		foreach (string RoomName in RoomNames)
 		{
-			List<Room> _rooms = new List<Room>();
-			string[] RoomNames = RoomSaver.GetRoomNames();
-			foreach (string RoomName in RoomNames)
-			{
-				_rooms.Add(RoomSaver.LoadRoom(RoomName));
-			}
-			this._rooms = _rooms.ToArray();
+			_rooms.Add(RoomSaver.LoadRoom(RoomName));
 		}
+		this._rooms = _rooms.ToArray();
+	}
 
-		public Room[] GetRooms()
-		{
-			return _rooms;
-		}
+	static public Room[] GetRooms()
+	{
+		return instance._rooms;
 	}
 }

@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GMTK2025.Engine;
 
-namespace GMTK2025.LevelGeneration
+namespace GMTK2025.RoomGeneration
 {
 	public class EditableRoomRenderer : ILoopObject
 	{

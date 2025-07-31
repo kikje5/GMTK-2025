@@ -4,7 +4,7 @@ using System.Linq;
 using GMTK2025.Engine;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GMTK2025.LevelGeneration
+namespace GMTK2025.RoomGeneration
 {
     /// <summary>
     /// A BuilderType for room that can be used in the room editor
