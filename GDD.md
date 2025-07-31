@@ -23,11 +23,11 @@ You are playing as a cowboy fighting wild life and bandits but you have lost you
 walking +
 throwing lasso +
 dragging rope +
-enemies
-damaging enemies
+enemies +
+damaging enemies +
 lasso hologram
 colliding with room
-spawining enemies in room
+spawining enemies in room -
 transitioning between rooms
 
 upgrades

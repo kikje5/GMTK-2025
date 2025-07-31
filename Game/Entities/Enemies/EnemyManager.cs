@@ -79,7 +79,6 @@ public class EnemyManager : ILoopObject
 		{
 			enemy.Draw(gameTime, spriteBatch);
 		}
-		Console.WriteLine($"EnemyManager: {enemies.Count} enemies active.");
 	}
 
 	public void HandleInput(InputHelper inputHelper) { }

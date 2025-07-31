@@ -10,6 +10,8 @@ public class Player : Entity
 {
 	public Texture2D SmallLassoTexture { get; set; } = App.AssetManager.GetTexture("Player/SmallLasso");
 	public Texture2D LargeLassoTexture { get; set; } = App.AssetManager.GetTexture("Player/LargeLasso");
+	public Texture2D SmallLassoHologramTexture { get; set; } = App.AssetManager.GetTexture("Player/SmallLassoHologram");
+	public Texture2D LargeLassoHologramTexture { get; set; } = App.AssetManager.GetTexture("Player/LargeLassoHologram");
 	public Texture2D DamageCircleTexture { get; set; } = App.AssetManager.GetTexture("Points/DamageCircle");
 	public Vector2 DamageCirclePosition { get; set; } = Vector2.Zero;
 	public int DamageCircleRadius { get; set; } = 32;
@@ -61,6 +63,10 @@ public class Player : Entity
 		if (DamageCircleRadius > 0)
 		{
 			spriteBatch.Draw(DamageCircleTexture, DamageCirclePosition, null, Color.White, 0, new Vector2(DamageCircleTexture.Width / 2, DamageCircleTexture.Height / 2), DamageCircleRadius / (float)DamageCircleTexture.Width, SpriteEffects.None, 0f);
+		}
+		if (IsThrowing)
+		{
+			DrawLassoHologram(spriteBatch);
 		}
 	}
 
@@ -143,10 +149,9 @@ public class Player : Entity
 		}
 	}
 
-	private void ThrowLasso(int charge, InputHelper inputHelper)
+	private void ThrowLasso(float charge, InputHelper inputHelper)
 	{
 		// Implement lasso throwing logic here
-		Console.WriteLine("Throwing lasso with charge: " + charge);
 		LassoIsSmall = charge > 65;
 		Vector2 directionToMouse = inputHelper.MousePosition - Position;
 		directionToMouse.Normalize();
@@ -219,6 +224,20 @@ public class Player : Entity
 			}
 		}
 		return -1;
+	}
+
+	private void DrawLassoHologram(SpriteBatch spriteBatch)
+	{
+		float charge = ThrowCharge;
+		bool smallHologram = charge > 65;
+		Vector2 directionToMouse = App.InputHelper.MousePosition - Position;
+		directionToMouse.Normalize();
+		Vector2 lassoOffset = directionToMouse * charge * (1 + (charge / 25));
+
+		Vector2 hologramPosition = new Vector2(Position.X + lassoOffset.X, Position.Y + lassoOffset.Y);
+		Texture2D hologramTexture = smallHologram ? SmallLassoHologramTexture : LargeLassoHologramTexture;
+
+		spriteBatch.Draw(hologramTexture, hologramPosition, null, Color.White, 0, new Vector2(LassoTexture.Width / 2, LassoTexture.Height / 2), 1f, SpriteEffects.None, 0f);
 	}
 
 }
