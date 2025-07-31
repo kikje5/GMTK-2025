@@ -3,7 +3,7 @@ using GMTK2025.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace GMTK2025.Character;
+namespace GMTK2025.Entities;
 
 public class Rope
 {

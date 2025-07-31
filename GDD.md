@@ -25,6 +25,7 @@ throwing lasso +
 dragging rope +
 enemies
 damaging enemies
+lasso hologram
 colliding with room
 spawining enemies in room
 transitioning between rooms
