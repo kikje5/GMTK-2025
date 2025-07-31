@@ -14,13 +14,35 @@ public class Player : Entity
 	public Texture2D LargeLassoHologramTexture { get; set; } = App.AssetManager.GetTexture("Player/LargeLassoHologram");
 	public Texture2D DamageCircleTexture { get; set; } = App.AssetManager.GetTexture("Points/DamageCircle");
 	public Vector2 DamageCirclePosition { get; set; } = Vector2.Zero;
-	public int DamageCircleRadius { get; set; } = 32;
+	public int DamageCircleRadius
+	{
+		get => damageCircleRadius;
+		set
+		{
+			damageCircleRadius = value;
+			DamageCircleCountdown = 30;
+		}
+	}
+	private int damageCircleRadius;
+	public int DamageCircleCountdown { get; set; } = 0;
 	public Texture2D LassoTexture { get; set; }
 	public bool IsThrowing { get; set; } = false;
 	public bool CanThrow { get; set; } = true;
 	private bool throwHasReachedMax = false;
 	public int ThrowCharge { get; set; } = 0;
-	public bool HasThrownLasso { get; set; } = false;
+	public bool HasThrownLasso {
+		get => hasThrownLasso;
+		set
+		{
+			hasThrownLasso = value;
+			if (value == true)
+			{
+				LassoCountDown = 30;
+			}
+		}
+	}
+	private bool hasThrownLasso = false;
+	private int LassoCountDown { get; set; } = 0;
 	public Rope Rope { get; set; }
 	public int RopeCircleCountdown = 0;
 	public bool LassoIsSmall
@@ -48,6 +70,24 @@ public class Player : Entity
 		Rope.Update(Position);
 
 		CheckRopeLoop();
+
+		if (DamageCircleCountdown <= 0)
+		{
+			DamageCircleRadius = 0;
+		}
+		else
+		{
+			DamageCircleCountdown--;
+		}
+
+		if (LassoCountDown <= 0)
+		{
+			HasThrownLasso = false;
+		}
+		else
+		{
+			LassoCountDown--;
+		}
 	}
 
 	public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

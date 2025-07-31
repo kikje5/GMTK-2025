@@ -58,7 +58,7 @@ public class Entity : ILoopObject
 		int Height = 1080;
 		if (Position.X - Size.X < 0)
 		{
-			Position = new Vector2(0, Position.Y);
+			Position = new Vector2(Size.X, Position.Y);
 		}
 		if (Position.X + Size.X > Width)
 		{
@@ -66,7 +66,7 @@ public class Entity : ILoopObject
 		}
 		if (Position.Y - Size.Y < 0)
 		{
-			Position = new Vector2(Position.X, 0);
+			Position = new Vector2(Position.X, Size.Y);
 		}
 		if (Position.Y + Size.Y > Height)
 		{
