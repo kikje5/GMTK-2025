@@ -20,4 +20,15 @@ You are playing as a cowboy fighting wild life and bandits but you have lost you
 
 ## Game Elements:
 
+walking +
+throwing lasso +
+dragging rope +
+enemies
+damaging enemies
+colliding with room
+spawining enemies in room
+transitioning between rooms
+
+upgrades
+
 ## Game style:

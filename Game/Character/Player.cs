@@ -11,7 +11,6 @@ public class Player : ILoopObject
 	public Vector2 Size { get; set; }
 	public Texture2D Texture { get; set; }
 	public Texture2D SmallLassoTexture { get; set; } = App.AssetManager.GetTexture("Player/SmallLasso");
-	public Texture2D MediumLassoTexture { get; set; } = App.AssetManager.GetTexture("Player/MediumLasso");
 	public Texture2D LargeLassoTexture { get; set; } = App.AssetManager.GetTexture("Player/LargeLasso");
 	public Texture2D LassoTexture { get; set; }
 	public float Rotation { get; set; } = 0;
@@ -26,29 +25,17 @@ public class Player : ILoopObject
 	private bool throwHasReachedMax = false;
 	public int ThrowCharge { get; set; } = 0;
 	public bool HasThrownLasso { get; set; } = false;
-	public int LassoSize
+	public Rope Rope { get; set; }
+	public bool LassoIsSmall
 	{
-		get => _lassoSize;
+		get => lassoIsSmall;
 		set
 		{
-			_lassoSize = value;
-			switch (value)
-			{
-				case 0:
-					LassoTexture = SmallLassoTexture;
-					break;
-				case 1:
-					LassoTexture = MediumLassoTexture;
-					break;
-				case 2:
-					LassoTexture = LargeLassoTexture;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(value), "Invalid lasso size");
-			}
+			lassoIsSmall = value;
+			LassoTexture = value ? SmallLassoTexture : LargeLassoTexture;
 		}
 	}
-	private int _lassoSize = 0; //0=small 1=medium 2=large
+	private bool lassoIsSmall = false;
 	public Vector2 LassoPosition { get; set; }
 	const float sqrt2 = 0.707106781185f;
 	public Player(Vector2 position, Vector2 size, float maxSpeed, float acceleration, float drag, int maxHealth)
@@ -62,6 +49,7 @@ public class Player : ILoopObject
 		Drag = drag;
 		MaxHealth = maxHealth;
 		Health = maxHealth;
+		Rope = new Rope(50, position);
 	}
 
 	public void Update(GameTime gameTime)
@@ -86,16 +74,18 @@ public class Player : ILoopObject
 		// Update position
 		Position += Velocity;
 
+		Rope.Update(Position);
 	}
 
 	public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
 	{
-		spriteBatch.Draw(Texture, (Position - Size / 2), new Rectangle(0, 0, Texture.Width, Texture.Height), Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), 1f, SpriteEffects.None, 1f);
+		Rope.Draw(spriteBatch);
+		spriteBatch.Draw(Texture, Position, null, Color.White, Rotation, new Vector2(Texture.Width / 2, Texture.Height / 2), 1f, SpriteEffects.None, 0f);
 		if (HasThrownLasso)
 		{
 			Vector2 directionToLasso = LassoPosition - Position;
 			float lassoRotation = (float)(Math.Atan2(directionToLasso.Y, directionToLasso.X) + Math.PI / 2);
-			spriteBatch.Draw(LassoTexture, new Rectangle((int)(LassoPosition.X - LassoTexture.Width / 2), (int)(LassoPosition.Y - LassoTexture.Height / 2), LassoTexture.Width, LassoTexture.Height), null, Color.White, lassoRotation, new Vector2(LassoTexture.Width / 2, LassoTexture.Height / 2), SpriteEffects.None, 0f);
+			spriteBatch.Draw(LassoTexture, LassoPosition, null, Color.White, lassoRotation, new Vector2(LassoTexture.Width / 2, LassoTexture.Height / 2), 1f, SpriteEffects.None, 0f);
 		}
 	}
 
@@ -175,18 +165,7 @@ public class Player : ILoopObject
 	{
 		// Implement lasso throwing logic here
 		Console.WriteLine("Throwing lasso with charge: " + charge);
-		switch (charge)
-		{
-			case > 80:
-				LassoSize = 0;
-				break;
-			case > 40:
-				LassoSize = 1;
-				break;
-			default:
-				LassoSize = 2;
-				break;
-		}
+		LassoIsSmall = charge > 65;
 		Vector2 directionToMouse = inputHelper.MousePosition - Position;
 		directionToMouse.Normalize();
 		Vector2 lassoOffset = directionToMouse * charge * (1 + (charge / 25));

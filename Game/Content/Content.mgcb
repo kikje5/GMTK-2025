@@ -106,7 +106,7 @@
 /processorParam:TextureFormat=Color
 /build:Player/LargeLasso.png
 
-#begin Player/MediumLasso.png
+#begin Player/Rope.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -116,7 +116,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Player/MediumLasso.png
+/build:Player/Rope.png
 
 #begin Player/SmallLasso.png
 /importer:TextureImporter
