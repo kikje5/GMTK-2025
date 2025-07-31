@@ -11,5 +11,7 @@ public class Wolf : Enemy
 		Drag = 0.2f;
 		Damage = 5;
 		AttackFrames = 30;
+		MaxHealth = 150;
+		Health = MaxHealth;
 	}
 }

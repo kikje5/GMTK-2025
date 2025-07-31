@@ -75,7 +75,7 @@ public class Porcupine : Enemy
 		{
 			if (Vector2.Distance(Needles[i].Position, Player.Position) < 16)
 			{
-				Player.DoDamage(Needles[i].Damage);
+				Player.TakeDamage(Needles[i].Damage);
 				Needles.RemoveAt(i); // Remove needle after hitting the player
 			}
 		}

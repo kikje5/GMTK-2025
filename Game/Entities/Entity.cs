@@ -17,6 +17,7 @@ public class Entity : ILoopObject
 	public float Drag { get; set; } = 0.15f;
 	public int MaxHealth { get; set; } = 100;
 	public int Health { get; set; }
+	public bool IsAlive => Health > 0;
 
 	public Entity(Vector2 position, Texture2D texture)
 	{
@@ -27,6 +28,11 @@ public class Entity : ILoopObject
 
 	public virtual void Update(GameTime gameTime)
 	{
+		if (!IsAlive)
+		{
+			return; // Do not update if the entity is not alive
+		}
+
 		// Clamp velocity to max speed
 		if (Velocity.X * Velocity.X + Velocity.Y * Velocity.Y > MaxSpeed * MaxSpeed)
 		{
@@ -46,6 +52,26 @@ public class Entity : ILoopObject
 
 		// Update position
 		Position += Velocity;
+
+		//keep inside screen bounds
+		int Width = 1920;
+		int Height = 1080;
+		if (Position.X - Size.X < 0)
+		{
+			Position = new Vector2(0, Position.Y);
+		}
+		if (Position.X + Size.X > Width)
+		{
+			Position = new Vector2(Width - Size.X, Position.Y);
+		}
+		if (Position.Y - Size.Y < 0)
+		{
+			Position = new Vector2(Position.X, 0);
+		}
+		if (Position.Y + Size.Y > Height)
+		{
+			Position = new Vector2(Position.X, Height - Size.Y);
+		}
 	}
 
 	public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
