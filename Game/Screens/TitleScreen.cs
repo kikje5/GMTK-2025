@@ -35,10 +35,6 @@ public class TitleScreen : Screen
 		GameButton.Clicked += () => App.ScreenManager.SwitchTo(ScreenManager.GAME_SCREEN);
 		Add(GameButton);
 
-		RoomCreatorButton = new Button(new Vector2(ButtonWidth / 4 + 8, 1080 - ButtonHeight / 4 - 8), buttonSize / 2);
-		RoomCreatorButton.Text = "Room Creator";
-		RoomCreatorButton.Clicked += () => App.ScreenManager.SwitchTo(ScreenManager.ROOM_CREATOR_SCREEN);
-		Add(RoomCreatorButton);
 
 		GlobalSettingsButton = new Button(new Vector2(ButtonX, ButtonYStart + ButtonSpacing), buttonSize);
 		GlobalSettingsButton.Text = "Global Settings";

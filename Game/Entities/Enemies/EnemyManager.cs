@@ -60,9 +60,10 @@ public class EnemyManager : ILoopObject
 
 	public void Update(GameTime gameTime)
 	{
+		Enemy[] enemiesArray = enemies.ToArray();
 		foreach (var enemy in enemies)
 		{
-			enemy.Update(gameTime);
+			enemy.Update(gameTime, enemiesArray);
 		}
 
 		SummonCooldown++;
@@ -85,7 +86,7 @@ public class EnemyManager : ILoopObject
 
 	public void Reset()
 	{
-		//enemies.Clear();
+		enemies.Clear();
 	}
 
 	public void DamageEnemiesInRadius(Vector2 position, float radius, int damage)

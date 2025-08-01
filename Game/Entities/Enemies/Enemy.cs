@@ -12,6 +12,7 @@ public class Enemy : Entity
 	public int attackRange = 10;
 	protected bool CanAttack = true;
 	protected int AttackCooldown = 0;
+	public int ExperienceWorth = 10;
 	private readonly Texture2D HealthBarBackgroundTexture = App.AssetManager.GetTexture("Enemies/HealthBarBackground");
 	private readonly Texture2D HealthBarOverlayTexture = App.AssetManager.GetTexture("Enemies/HealthBarOverlay");
 	public Enemy(Vector2 position, Player player, Texture2D texture) : base(position, texture)
@@ -19,7 +20,7 @@ public class Enemy : Entity
 		Player = player;
 	}
 
-	public override void Update(GameTime gameTime)
+	public virtual void Update(GameTime gameTime, Enemy[] enemies)
 	{
 		if (CanAttack)
 		{
@@ -44,6 +45,17 @@ public class Enemy : Entity
 		Vector2 direction = Player.Position - Position;
 		direction.Normalize();
 		Velocity += direction * Acceleration;
+
+		//avoid other enemies and swarm behavior
+		foreach (var enemy in enemies)
+		{
+			if (enemy != this && Vector2.Distance(Position, enemy.Position) < 32)
+			{
+				Vector2 avoidanceDirection = Position - enemy.Position;
+				avoidanceDirection.Normalize();
+				Velocity += avoidanceDirection * Acceleration * 0.5f; // Adjust the multiplier for desired effect
+			}
+		}
 
 		base.Update(gameTime);
 	}

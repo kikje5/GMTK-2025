@@ -22,7 +22,7 @@ public class Porcupine : Enemy
 		Damage = 10;
 	}
 
-	public override void Update(GameTime gameTime)
+	public override void Update(GameTime gameTime, Enemy[] enemies)
 	{
 		float DistanceToPlayer = Vector2.Distance(Position, Player.Position);
 		if (DistanceToPlayer < FiringRange / 2)
@@ -57,7 +57,7 @@ public class Porcupine : Enemy
 		}
 		else
 		{
-			base.Update(gameTime);
+			base.Update(gameTime, enemies);
 		}
 
 		// Update needles

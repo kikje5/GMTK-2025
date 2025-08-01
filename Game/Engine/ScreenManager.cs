@@ -12,8 +12,6 @@ public class ScreenManager : ILoopObject
 	public static string SETTINGS_SCREEN = "Settings Screen";
 	public static string GAME_SCREEN = "Game Screen";
 
-	public static string ROOM_CREATOR_SCREEN = "Room Creator Screen";
-
 
 	private readonly Stack<string> previousGameScreens = new Stack<string>();
 	private string currentScreenName = string.Empty;
@@ -31,7 +29,6 @@ public class ScreenManager : ILoopObject
 		AddScreen(TITLE_SCREEN, new TitleScreen());
 		AddScreen(SETTINGS_SCREEN, new SettingsScreen());
 		AddScreen(GAME_SCREEN, new GameScreen());
-		AddScreen(ROOM_CREATOR_SCREEN, new RoomCreatorScreen());
 	}
 
 	public void AddScreen(string name, Screen state)

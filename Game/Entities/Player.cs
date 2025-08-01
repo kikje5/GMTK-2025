@@ -56,6 +56,8 @@ public class Player : Entity
 	}
 	private bool lassoIsSmall;
 	public Vector2 LassoPosition { get; set; }
+	public int CurrentExperience { get; set; } = 0;
+	public int ExperienceNeededForNextLevel { get; set; } = 100;
 	const float sqrt2 = 0.707106781185f;
 	public Player(Vector2 position) : base(position, App.AssetManager.GetTexture("Player/Cowboy_hat"))
 	{

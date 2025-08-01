@@ -54,23 +54,44 @@ public class Entity : ILoopObject
 		Position += Velocity;
 
 		//keep inside screen bounds
-		int Width = 1920;
-		int Height = 1080;
-		if (Position.X - Size.X < 0)
+		// int Width = 1920;
+		// int Height = 1080;
+		// if (Position.X - Size.X < 0)
+		// {
+		// 	Position = new Vector2(Size.X, Position.Y);
+		// }
+		// if (Position.X + Size.X > Width)
+		// {
+		// 	Position = new Vector2(Width - Size.X, Position.Y);
+		// }
+		// if (Position.Y - Size.Y < 0)
+		// {
+		// 	Position = new Vector2(Position.X, Size.Y);
+		// }
+		// if (Position.Y + Size.Y > Height)
+		// {
+		// 	Position = new Vector2(Position.X, Height - Size.Y);
+		// }
+
+		int left = 420;
+		int right = 1500;
+		int top = 0;
+		int bottom = 1080;
+		if (Position.X - Size.X < left)
 		{
-			Position = new Vector2(Size.X, Position.Y);
+			Position = new Vector2(left + Size.X, Position.Y);
 		}
-		if (Position.X + Size.X > Width)
+		if (Position.X + Size.X > right)
 		{
-			Position = new Vector2(Width - Size.X, Position.Y);
+			Position = new Vector2(right - Size.X, Position.Y);
 		}
-		if (Position.Y - Size.Y < 0)
+		if (Position.Y - Size.Y < top)
 		{
-			Position = new Vector2(Position.X, Size.Y);
+			Position = new Vector2(Position.X, top + Size.Y);
 		}
-		if (Position.Y + Size.Y > Height)
+		if (Position.Y + Size.Y > bottom)
 		{
-			Position = new Vector2(Position.X, Height - Size.Y);
+			Position = new Vector2(Position.X, bottom - Size.Y);
 		}
 	}
 
