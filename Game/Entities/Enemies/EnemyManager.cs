@@ -69,7 +69,7 @@ public class EnemyManager : ILoopObject
 		SummonCooldown++;
 		if (SummonCooldown >= summonFrames)
 		{
-			SummonCooldown = random.Next(0, summonFrames / 2);
+			SummonCooldown = random.Next(0, summonFrames / 2) + Player.Level;
 			SummonRandomEnemy();
 		}
 	}
@@ -94,14 +94,15 @@ public class EnemyManager : ILoopObject
 		for (int i = enemies.Count - 1; i >= 0; i--)
 		{
 			var enemy = enemies[i];
-			if (!enemy.IsAlive) continue; // Skip dead enemies1
+			if (!enemy.IsAlive) continue;
 			{
 				if (Vector2.Distance(enemy.Position, position) <= radius)
 				{
 					enemy.TakeDamage(damage);
 					if (!enemy.IsAlive)
 					{
-						RemoveEnemy(enemy); // Remove enemy if dead
+						Player.CurrentExperience += enemy.ExperienceWorth;
+						RemoveEnemy(enemy);
 					}
 				}
 			}

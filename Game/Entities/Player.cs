@@ -30,7 +30,8 @@ public class Player : Entity
 	public bool CanThrow { get; set; } = true;
 	private bool throwHasReachedMax = false;
 	public int ThrowCharge { get; set; } = 0;
-	public bool HasThrownLasso {
+	public bool HasThrownLasso
+	{
 		get => hasThrownLasso;
 		set
 		{
@@ -56,8 +57,25 @@ public class Player : Entity
 	}
 	private bool lassoIsSmall;
 	public Vector2 LassoPosition { get; set; }
-	public int CurrentExperience { get; set; } = 0;
+	public int CurrentExperience
+	{
+		get => _currentExperience;
+		set
+		{
+			_currentExperience = value;
+			if (_currentExperience >= ExperienceNeededForNextLevel)
+			{
+				Level++;
+				_currentExperience = 0;
+				ExperienceNeededForNextLevel += 50;
+				HasJustLeveledUp = true;
+			}
+		}
+	}
+	private int _currentExperience = 0;
 	public int ExperienceNeededForNextLevel { get; set; } = 100;
+	public int Level { get; set; } = 1;
+	public bool HasJustLeveledUp { get; set; } = false;
 	const float sqrt2 = 0.707106781185f;
 	public Player(Vector2 position) : base(position, App.AssetManager.GetTexture("Player/Cowboy_hat"))
 	{
